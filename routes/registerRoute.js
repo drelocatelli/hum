@@ -24,6 +24,14 @@ router.post('/', (req, res) => {
 
     let payload = req.body;
 
+    // check email
+    let regexEmail = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
+		        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+
+    if(!email.match(regexEmail)) {
+        res.render('register', {messageType: 'danger', message: 'Make sure email field has a correct pattern.'})
+    }
+                
     if(firstName && lastName && username && email && password) {
         res.render('register', {messageType: 'success', message: 'You were successfully registered!'})
     }else {
