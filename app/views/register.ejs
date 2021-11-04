@@ -1,60 +1,80 @@
 <%- include('components/header.ejs') %>
 
-    <div class="container">
+    <div class="container mb-5">
         <div class="card mt-5">
             <div class="card-header">
                 <h4>Registration form</h4>
             </div>
             <div class="login-container px-4 pt-3">
+                <% if(locals.message) { %>
+                    <div class="alert alert-<%= messageType %>">
+                        <%= message %>
+                    </div>
+                <% } %>
+                <% if(locals.messageType != 'success') { %>
                 <form method="post">
                     <div class="form-group">
                         <div class="row">
                             <div class="col">
                                 <label for="firstName">First name</label>
-                                <input type="text" class="form-control" name="firstName" id="firstName" required />
+                                <input type="text" class="form-control" name="firstName" id="firstName" />
                             </div>
                             <div class="col">
                                 <label for="lastName">Last name</label>
-                                <input type="text" class="form-control" name="lastName" id="lastName" required />
+                                <input type="text" class="form-control" name="lastName" id="lastName" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="logUsername">Username</label>
-                        <input type="text" class="form-control" name="logUsername" id="logUsername" placeholder="username" required />
+                        <input type="text" class="form-control" name="logUsername" id="logUsername" placeholder="username" />
                     </div>
                     
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" name="email" id="email" placeholder="email" required />
+                        <input type="email" class="form-control" name="email" id="email" placeholder="email" />
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                     </div>
 
                     <div class="form-group">
                         <label for="logPassword">Password</label>
-                        <input type="password" class="form-control" name="logPassword" id="logPassword" placeholder="********" required />
+                        <input type="password" class="form-control" name="logPassword" id="logPassword" autocomplete="on" placeholder="********" />
                     </div>
 
                     <div class="form-group">
                         <label for="logPasswordConfirm">Confirm password</label>
-                        <input type="password" class="form-control" name="logPasswordConfirm" id="logPasswordConfirm" placeholder="********" required />
+                        <input type="password" class="form-control" name="logPasswordConfirm" id="logPasswordConfirm" autocomplete="on" placeholder="********" />
+                        <small id="passwordHelp" class="form-text text-muted"></small>
                     </div>
                     
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary">Confirm registration</button>
-                            </div>
-                            <div class="col">
-                                <p style="position:relative; top:10px;"> <a href="/login">Already have an account? Login here</a> </p>
-                            </div>
-                        </div>
+                        <button type="submit" class="btn btn-primary">Confirm registration</button>
                     </div>
-                    
-                </form>
+                </div>
+                
+            </form>
+            <% } %> 
+            <div class="form-group mx-4"> 
+                <a href="/login">Already have an account? Login here</a> 
             </div>
         </div>
     </div>
+
+    <script>
+        let form = document.querySelector('form')
+        let logPassword = form.querySelector('[name=logPassword]')
+        let logPasswordConfirm = form.querySelector('[name=logPasswordConfirm]')
+
+        form.onsubmit = (e) => {
+            if(logPassword.value != logPasswordConfirm.value) {
+                e.preventDefault()
+                form.querySelector('#passwordHelp').innerText = "Passwords do not match!"
+                logPasswordConfirm.style.border = '1px solid red'
+            }else {
+                form.submit()
+            }
+        }
+    </script>
 
 <%- include('components/footer.ejs') %>
