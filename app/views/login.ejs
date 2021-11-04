@@ -1,0 +1,29 @@
+<%- include('components/header.ejs') %>
+
+    <div class="container">
+        <div class="card mt-5">
+            <div class="card-header">
+                <h4>Login</h4>
+            </div>
+            <div class="login-container px-4 pt-3">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="logUsername">Email address</label>
+                        <input type="text" class="form-control" name="logUsername" id="logUsername" placeholder="Username or email" required />
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="logPassword">Password</label>
+                        <input type="password" class="form-control" name="logPassword" id="logPassword" placeholder="********" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <p class="pt-3 pb-1">
+                    <a href="/register">Need an account? Register here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+<%- include('components/footer.ejs') %>

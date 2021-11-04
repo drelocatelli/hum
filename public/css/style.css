@@ -1,0 +1,39 @@
+body{
+    background:#9fa9ae;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.form-group {
+    margin-bottom: 1rem ;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 0.5rem ;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:10vh 0;
+}
+
+.logo a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    font-size: 55px;
+    text-shadow: 0px 3px 2px #424242, 5px 0px 8px #57a9d0;
+    font-family: monospace;
+}
+
+.logo a:hover{
+    text-decoration: none;
+}

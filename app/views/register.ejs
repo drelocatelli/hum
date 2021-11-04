@@ -1,0 +1,60 @@
+<%- include('components/header.ejs') %>
+
+    <div class="container">
+        <div class="card mt-5">
+            <div class="card-header">
+                <h4>Registration form</h4>
+            </div>
+            <div class="login-container px-4 pt-3">
+                <form method="post">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label for="firstName">First name</label>
+                                <input type="text" class="form-control" name="firstName" id="firstName" required />
+                            </div>
+                            <div class="col">
+                                <label for="lastName">Last name</label>
+                                <input type="text" class="form-control" name="lastName" id="lastName" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="logUsername">Username</label>
+                        <input type="text" class="form-control" name="logUsername" id="logUsername" placeholder="username" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="email" required />
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="logPassword">Password</label>
+                        <input type="password" class="form-control" name="logPassword" id="logPassword" placeholder="********" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="logPasswordConfirm">Confirm password</label>
+                        <input type="password" class="form-control" name="logPasswordConfirm" id="logPasswordConfirm" placeholder="********" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary">Confirm registration</button>
+                            </div>
+                            <div class="col">
+                                <p style="position:relative; top:10px;"> <a href="/login">Already have an account? Login here</a> </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+
+<%- include('components/footer.ejs') %>
