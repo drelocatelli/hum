@@ -8,10 +8,10 @@ class Database {
     connect() {
         mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@${process.env.DBCLUSTERNAME}.wkgwx.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`)
         .then(() => {
-            console.log('database connection successful')
+            console.log('[Database] connection successful')
         })
         .catch((err) => {
-            console.log('database connection error: '+ err)
+            console.log('[Database] connection error: '+ err)
         })
     }
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -7,8 +8,9 @@ const UserSchema = new Schema({
     lastName: { type: String, required: true, trim: true },
     username: { type: String, required: true, trim: true, unique: true },
     email: { type: String, required: true, trim: true, unique: true },
-    email: { type: String, required: true },
+    password: { type: String, required: true },
     profilePic: { type: String, default: '/images/profile/default.png' },
+    created: { type: String, default: new Date().toLocaleDateString('en-GV') }
 })
 
 var User = mongoose.model('User', UserSchema)
