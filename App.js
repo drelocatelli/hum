@@ -8,10 +8,12 @@ const middleware = require('./middleware');
 
 const server = app.listen((process.env.PORT || 3000), () => { console.log('[Server] listening on port: ' + process.env.PORT) });
 
+// static and views
 app.set("view engine", "ejs");
 app.set("views", "app/views");
 app.use(express.static('public'));
 
+// session
 app.use(session({
     secret: process.env.SECRET,
     resave: true,
@@ -23,11 +25,14 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 
-// Routes 
+// routes 
 const loginRoute = require('./routes/loginRoutes')
 const registerRoute = require('./routes/registerRoute')
+const logoutRoute = require('./routes/logoutRoute')
 
 app.use('/login', loginRoute)
+
+app.use('/logout', logoutRoute)
 
 app.use('/register', registerRoute)
 

@@ -39,7 +39,7 @@ router.post('/', async (req, res, next) => {
          
     }
 
-    res.render('login');
+    res.render('login', {messageType:'info', message: 'You need to login.'});
 })
 
 module.exports = router;
