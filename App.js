@@ -29,6 +29,7 @@ app.use(express.urlencoded({ extended: true }))
 const loginRoute = require('./routes/loginRoutes')
 const registerRoute = require('./routes/registerRoute')
 const logoutRoute = require('./routes/logoutRoute')
+const postsRoute = require('./routes/postsRouter')
 
 app.use('/login', loginRoute)
 
@@ -36,10 +37,12 @@ app.use('/logout', logoutRoute)
 
 app.use('/register', registerRoute)
 
+app.use('/api/posts', postsRoute)
+
 app.get('/', middleware.requireLogin, (req, res) => {
     let payload = {
         userLoggedIn: req.session.user
     }
     
-    res.render('home/index', payload);
+    res.render('panel/home', payload);
 })

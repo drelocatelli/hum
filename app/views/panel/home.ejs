@@ -1,0 +1,201 @@
+<%- include('components/header.ejs') %>
+
+    <div class="main">
+        <h4>
+            <img src="<%= userLoggedIn.profilePic %>" class="profile-photo"> &nbsp;
+            Welcome, <%= `${userLoggedIn.username}` %>
+        </h4>
+        <hr />
+        <table width="100%">
+            <form method="post">
+                <tr>
+                    <td>
+                        <textarea name="post" class="form-control" style="width:100%;" placeholder="What's happening?"
+                            maxlength="500"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="row" style="min-height: 0;">
+                            <div class="col-10">
+                                <b id="message" style="position: relative; top: 10px;"></b>
+                            </div>
+                            <div class="col-2 " style="padding-right: 0;">
+                                <button type="submit" class="mt-2 btn btn-info float-right">Submit</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>
+
+    <div class="posts" id="myPosts">
+
+        <!-- <article>
+            <p style="padding-bottom: 10px;">
+                Mussum Ipsum, cacilds vidis litro abertis. Manduma pindureta quium dia nois paga. Si num tem leite então
+                bota uma pinga aí cumpadi! Mauris nec dolor in eros commodo tempor. Aenean aliquam molestie leo, vitae
+                iaculis nisl. Atirei o pau no gatis, per gatis num morreus.
+            </p>
+            <hr>
+            <div class="footer">
+                <div class="float-left">
+                    <a href="">
+                        <%= '@' + userLoggedIn.username %>
+                    </a>
+                </div>
+
+                <actions>
+                    <li>
+                        <a href=""><i class="far fa-heart"></i></a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fas fa-comments"></i></a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fas fa-share"></i></a>
+                    </li>
+                </actions>
+            </div>
+            <div style="clear: both;"></div>
+        </article> -->
+
+    </div>
+
+    <script>
+        let form = document.querySelector('form')
+        let textarea = document.querySelector('textarea')
+        let button = document.querySelector('button[type=submit]')
+        let posts = document.querySelector('#myPosts')
+
+        function post() {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            let raw = JSON.stringify({
+                "posts": textarea.value
+            });
+
+            let requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            fetch("/api/posts", requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    message.classList.add('text-success')
+                    message.style = 'opacity:1; transition: opacity 0.1s;'
+                    message.innerText = 'your post has been posted'
+                    setTimeout(() => {
+                        message.style = 'opacity:0;'
+                    }, 3000)
+                    textarea.value = ''
+                })
+                .catch(err => {
+                    message.classList.add('text-danger')
+                    message.innerText = 'an error ocurred'
+                    console.log(err)
+                });
+        }
+
+        function buttonHandle() {
+            if (textarea.value == '') {
+                button.disabled = true;
+            } else {
+                button.disabled = false;
+            }
+
+        }
+
+        buttonHandle()
+
+        form.onsubmit = e => { e.preventDefault() }
+
+        textarea.onkeyup = e => {
+
+            buttonHandle()
+        }
+
+        button.onclick = () => {
+            post()
+        }
+
+        // ----------------------------------------------- display posts
+        async function getPosts() {
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+
+            fetch("/api/posts", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    outputPosts(result)
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        function outputPosts(results) {
+            let userLoggedInId = "<%= userLoggedIn._id %>"
+
+            myPosts = results.filter(result => {
+                return result.postedBy == userLoggedInId
+            })
+
+            createPostHtml(myPosts)
+            getPosts()
+
+        }
+
+        function createPostHtml(myPosts) {
+            
+            myPosts.forEach(i => {
+                posts.innerHTML += `
+                <article>
+            <p style="padding-bottom: 10px;">
+                ${i.content}
+            </p>
+            <hr>
+            <div class="footer">
+                <div class="float-left">
+                    <a href="">
+                        <%= '@' + userLoggedIn.username %>
+                    </a>
+                </div>
+
+                <actions>
+                    <li>
+                        <a href=""><i class="far fa-heart"></i></a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fas fa-comments"></i></a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fas fa-share"></i></a>
+                    </li>
+                </actions>
+            </div>
+            <div style="clear: both;"></div>
+        </article>
+        `
+            })
+        }
+
+        window.onload = () => {
+
+            getPosts()
+
+        }
+
+    </script>
+
+    <%- include('components/footer.ejs') %>

@@ -3,6 +3,7 @@ const app = express();
 const router = express.Router();
 const User = require('../schemas/UserSchema');
 const bcrypt = require('bcrypt')
+const sanitize = require('mongo-sanitize')
 
 router.get('/', (req, res) => {
     res.render('register');
@@ -10,11 +11,11 @@ router.get('/', (req, res) => {
 
 router.post('/', async(req, res) => {
     
-    let firstName = req.body.firstName.trim();
-    let lastName = req.body.lastName.trim();
-    let username = req.body.logUsername.trim();
-    let email = req.body.email.trim();
-    let password = req.body.logPassword;
+    let firstName = sanitize(req.body.firstName.trim());
+    let lastName = sanitize(req.body.lastName.trim());
+    let username = sanitize(req.body.logUsername.trim());
+    let email = sanitize(req.body.email.trim());
+    let password = sanitize(req.body.logPassword);
 
     let payload = req.body;
 

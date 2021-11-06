@@ -3,6 +3,7 @@ const app = express();
 const router = express.Router();
 const User = require('../schemas/UserSchema')
 const bcrypt = require('bcrypt')
+const sanitize = require('mongo-sanitize')
 
 router.get('/', (req, res) => {
     
@@ -10,12 +11,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res, next) => {
-    if(req.body.logUsername && req.body.logPassword) {
+    
+    if(sanitize(req.body.logUsername) && sanitize(req.body.logPassword)) {
 
         var user = await User.findOne({ 
             $or: [
-                { username: req.body.logUsername },
-                { email: req.body.logUsername }
+                { username: sanitize(req.body.logUsername) },
+                { email: sanitize(req.body.logUsername) }
             ]
          }).catch((error) => {
 
@@ -23,7 +25,7 @@ router.post('/', async (req, res, next) => {
          })
 
         if(user != null) {
-            let result = await bcrypt.compare(req.body.logPassword, user.password)
+            let result = await bcrypt.compare(sanitize(req.body.logPassword), user.password)
 
             if(result === true) {
 
