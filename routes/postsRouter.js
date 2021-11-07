@@ -6,6 +6,7 @@ const sanitize = require('mongo-sanitize')
 
 router.get('/', (req, res) => {
     Post.find()
+    .populate("postedBy")
     .sort({ 'createdAt': -1 })
     .then((results) => {
         res.send(results)

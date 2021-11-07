@@ -32,34 +32,7 @@
 
     <div class="posts" id="myPosts">
 
-        <!-- <article>
-            <p style="padding-bottom: 10px;">
-                Mussum Ipsum, cacilds vidis litro abertis. Manduma pindureta quium dia nois paga. Si num tem leite então
-                bota uma pinga aí cumpadi! Mauris nec dolor in eros commodo tempor. Aenean aliquam molestie leo, vitae
-                iaculis nisl. Atirei o pau no gatis, per gatis num morreus.
-            </p>
-            <hr>
-            <div class="footer">
-                <div class="float-left">
-                    <a href="">
-                        <%= '@' + userLoggedIn.username %>
-                    </a>
-                </div>
-
-                <actions>
-                    <li>
-                        <a href=""><i class="far fa-heart"></i></a>
-                    </li>
-                    <li>
-                        <a href=""><i class="fas fa-comments"></i></a>
-                    </li>
-                    <li>
-                        <a href=""><i class="fas fa-share"></i></a>
-                    </li>
-                </actions>
-            </div>
-            <div style="clear: both;"></div>
-        </article> -->
+        <message></message>
 
     </div>
 
@@ -139,48 +112,99 @@
             fetch("/api/posts", requestOptions)
                 .then(response => response.json())
                 .then(result => {
-                    outputPosts(result)
+                    filterPostResults(result)
                 })
                 .catch(error => console.log('error', error));
         }
 
-        function outputPosts(results) {
-            let userLoggedInId = "<%= userLoggedIn._id %>"
+        function filterPostResults(posts) {
 
-            myPosts = results.filter(result => {
-                return result.postedBy == userLoggedInId
+            if (posts.length == 0) {
+                document.querySelector('message').innerText = 'Nothing to show.'
+            }
+
+            // filter if user not exists
+            posts.filter(post => {
+                if (posts.postedBy === undefined) {
+                    return console.error('User object not populated')
+                }
             })
 
-            createPostHtml(myPosts)
-            getPosts()
+            createPostHtml(posts)
+
+            console.log(posts)
 
         }
 
+        function timeDifference(current, previous) {
+
+            var msPerMinute = 60 * 1000;
+            var msPerHour = msPerMinute * 60;
+            var msPerDay = msPerHour * 24;
+            var msPerMonth = msPerDay * 30;
+            var msPerYear = msPerDay * 365;
+
+            var elapsed = current - previous;
+
+            if (elapsed < msPerMinute) {
+                if(elapsed/1000 < 30) return "Just now";
+                return Math.round(elapsed / 1000) + ' seconds ago';
+            }
+
+            else if (elapsed < msPerHour) {
+                return Math.round(elapsed / msPerMinute) + ' minutes ago';
+            }
+
+            else if (elapsed < msPerDay) {
+                return Math.round(elapsed / msPerHour) + ' hours ago';
+            }
+
+            else if (elapsed < msPerMonth) {
+                return Math.round(elapsed / msPerDay) + ' days ago';
+            }
+
+            else if (elapsed < msPerYear) {
+                return Math.round(elapsed / msPerMonth) + ' months ago';
+            }
+
+            else {
+                return Math.round(elapsed / msPerYear) + ' years ago';
+            }
+        }
+
         function createPostHtml(myPosts) {
-            
-            myPosts.forEach(i => {
+
+            myPosts.forEach(post => {
                 posts.innerHTML += `
                 <article>
             <p style="padding-bottom: 10px;">
-                ${i.content}
+                ${post.content}
             </p>
             <hr>
             <div class="footer">
                 <div class="float-left">
-                    <a href="">
-                        <%= '@' + userLoggedIn.username %>
-                    </a>
+                    <div class="details">
+                        <a href="" title="post author"> 
+                            <div class="user-profile-photo" style="display:inline;">
+                                <img src="${post.postedBy.profilePic}" width="15px" height="15px" style="border-radius:50%;" />
+                            </div>
+                            @${post.postedBy.username} 
+                        </a>
+                        &nbsp;
+                        ⋅ 
+                        <span title="${new Date(post.createdAt).toLocaleString("pt-br")}">${timeDifference(new Date(), new Date(post.createdAt))}</span>
+                    </div>
                 </div>
 
                 <actions>
                     <li>
-                        <a href=""><i class="far fa-heart"></i></a>
+                        <a href="" title="like"><i class="far fa-heart"></i></a>
                     </li>
                     <li>
-                        <a href=""><i class="fas fa-comments"></i></a>
+                        <a href="" title="comments"><i class="fas fa-comments"></i></a>
                     </li>
                     <li>
-                        <a href=""><i class="fas fa-share"></i></a>
+                        <a href="" title="share"><i class="fas fa-share"></i></a>
                     </li>
                 </actions>
             </div>

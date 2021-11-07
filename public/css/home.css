@@ -91,6 +91,12 @@ img.profile-photo {
     border-radius: 20px;
 }
 
+.posts .details {
+    position:relative;
+    top:10px;
+    font-size:15px;
+}
+
 .posts .footer {
     font-size:22px;
 }
